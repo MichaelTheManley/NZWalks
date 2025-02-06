@@ -29,9 +29,10 @@ namespace NZWalks.API.Controllers
         // GET SINGLE REGION (BY ID)
         [HttpGet]
         [Route("{id:Guid}")] // Typesafe
-        public IActionResult GetById(Guid id)
+        public IActionResult GetById([FromRoute] Guid id)
         {
             var region = dbContext.Regions.Find(id);
+            // var region = dbContext.Regions.FirstOrDefault(r => r.Id == id); // Alternative -> We find the first region that has an id that matches the one given
 
             if (region == null)
             {
