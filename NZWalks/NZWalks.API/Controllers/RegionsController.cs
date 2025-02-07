@@ -132,5 +132,35 @@ namespace NZWalks.API.Controllers
             // Return DTO back to client
             return Ok(regionDto);
         }
+
+        // DELETE
+        [HttpDelete]
+        [Route("{id: Guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            // Attempt to find the region with the given id.
+            var regionDomainModel = dbContext.Regions.Find(id);
+
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            // Delete region and save changes to database
+            dbContext.Regions.Remove(regionDomainModel);
+            dbContext.SaveChanges();
+
+            // Convert domain model back to Dto and return to client
+            var regionDto = new RegionDto
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+                Code = regionDomainModel.Code,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+            // Return Dto back to client
+            return Ok(regionDto); // You can also send the empty okay resposne back
+        }
     }
 }
