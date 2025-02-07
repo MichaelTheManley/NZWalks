@@ -99,5 +99,38 @@ namespace NZWalks.API.Controllers
                                                                                              * the database by using the GetById method.
                                                                                              */
         }
+
+        // UPDATE: https://localhost:5001/api/regions
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updates)
+        {
+            // Check if region exists
+            var regionDomainModel = dbContext.Regions.Find(id);
+
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            // Map Dto to domain model
+            regionDomainModel.Name = updates.Name;
+            regionDomainModel.Code = updates.Code;
+            regionDomainModel.RegionImageUrl = updates.RegionImageUrl;
+
+            dbContext.SaveChanges();
+
+            // Convert Domain Model back to DTO
+            var regionDto = new RegionDto()
+            {
+                Id = regionDomainModel.Id,
+                Name = regionDomainModel.Name,
+                Code = regionDomainModel.Code,
+                RegionImageUrl = regionDomainModel.RegionImageUrl
+            };
+
+            // Return DTO back to client
+            return Ok(regionDto);
+        }
     }
 }
