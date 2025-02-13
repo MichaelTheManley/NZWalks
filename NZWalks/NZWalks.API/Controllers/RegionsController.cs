@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
-using NZWalks.API.Models.DTO;
+using NZWalks.API.Models.DTO.RegionDto;
 using NZWalks.API.Repositories;
 
 namespace NZWalks.API.Controllers
@@ -14,13 +14,11 @@ namespace NZWalks.API.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
-        private readonly NZWalksDbContext dbContext;
         private readonly IRegionRepository regionRepo;
         private readonly IMapper mapper;
 
-        public RegionsController(NZWalksDbContext dbContext, IRegionRepository regionRepo, IMapper mapper)
+        public RegionsController(IRegionRepository regionRepo, IMapper mapper)
         {
-            this.dbContext = dbContext;
             this.regionRepo = regionRepo;
             this.mapper = mapper;
         }

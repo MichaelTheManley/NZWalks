@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NZWalks.API.Models.Domain;
-using NZWalks.API.Models.DTO;
+using NZWalks.API.Models.DTO.RegionDto;
+using NZWalks.API.Models.DTO.Walk;
 
 namespace NZWalks.API.Mappings
 {
@@ -11,6 +12,8 @@ namespace NZWalks.API.Mappings
             CreateMap<Region, RegionDto>().ReverseMap(); // We add the reverse map in case we use the reverse somewhere as well
             CreateMap<AddRegionRequestDto, Region>().ReverseMap();
             CreateMap<UpdateRegionRequestDto, Region>().ReverseMap();
+            CreateMap<AddWalkRequestDto, Walk>();
+            CreateMap<Walk, WalkDto>();
         }
     }
 }
