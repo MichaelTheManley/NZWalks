@@ -18,6 +18,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectio
                                                                                                 call it within controllers or repositories. */
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>(); // We inject the IRegionRepository into the container, with the implmentation of SQLRegionRepository.
+builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>(); // We inject the IWalkRepository into the container, with the implmentation of SQLWalkRepository.
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
