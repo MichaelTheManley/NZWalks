@@ -1,6 +1,4 @@
-﻿using NZWalks.API.Models.Domain;
-
-namespace NZWalks.API.Models.DTO.Walk
+﻿namespace NZWalks.API.Models.DTO.Walk
 {
     public class AddWalkRequestDto
     {

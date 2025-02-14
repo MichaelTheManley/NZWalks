@@ -15,13 +15,23 @@ namespace NZWalks.API.Repositories
 
         public async Task<List<Walk>> GetAllWalksAsync()
         {
-            var walks = await dbContext.Walks.ToListAsync();
+            /*
+             * When the dbContext goes to the database to retrieve all the walks, it will also retrieve the associated difficutly and region
+             * for a walk. This is done by setting navigation properties in the Walk Domain Model, which are then included in the query below.
+             * It finds the associated difficulty and region for each walk by looking at the DifficultyId and RegionId properties in the Walk Domain Model. 
+             */
+            var walks = await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+
+            // To make it more type safe, we can do the following:
+            // var walks = await dbContext.Walks.Include(x => x.Difficulty).Include(x => x.Region).ToListAsync();
+
+            // We will opt for the first method as we will have generic repositories later on
             return walks;
         }
 
         public async Task<Walk> GetWalkByIdAsync(Guid id)
         {
-            var walk = await dbContext.Walks.FirstOrDefaultAsync(w => w.Id == id);
+            var walk = await dbContext.Walks.Include("Difficulty").Include("Region").FirstOrDefaultAsync(w => w.Id == id);
             return walk;
         }
 
