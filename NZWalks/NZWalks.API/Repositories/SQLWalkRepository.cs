@@ -57,8 +57,6 @@ namespace NZWalks.API.Repositories
             walk.WalkImageUrl = updates.WalkImageUrl;
             walk.DifficultyId = updates.DifficultyId;
             walk.RegionId = updates.RegionId;
-            walk.Difficulty = await dbContext.Difficulties.FirstOrDefaultAsync(d => d.Id == updates.DifficultyId);
-            walk.Region = await dbContext.Regions.FirstOrDefaultAsync(r => r.Id == updates.RegionId);
 
             await dbContext.SaveChangesAsync();
 
