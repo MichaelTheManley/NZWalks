@@ -20,11 +20,13 @@ namespace NZWalks.API.Controllers
             this.walkRepo = walkRepo;
         }
 
+        // GET All Walks
+        // GET: /api/walks?filterOn=Name&filterQuery=Track
         [HttpGet]
-        public async Task<IActionResult> GetWalks()
+        public async Task<IActionResult> GetWalks([FromQuery] string? filterOn, [FromQuery] string? filterQuery, [FromQuery] string? sortingBy, [FromQuery] bool? isAscending)
         {
             // Get all walks via interface
-            var walks = await walkRepo.GetAllWalksAsync();
+            var walks = await walkRepo.GetAllWalksAsync(filterOn, filterQuery, sortingBy, isAscending);
 
             // Convert walks to list of dto's
             var walkDtos = mapper.Map<List<WalkDto>>(walks);
