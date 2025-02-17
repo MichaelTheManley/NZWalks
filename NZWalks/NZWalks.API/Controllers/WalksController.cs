@@ -26,7 +26,7 @@ namespace NZWalks.API.Controllers
         public async Task<IActionResult> GetWalks([FromQuery] string? filterOn, [FromQuery] string? filterQuery, [FromQuery] string? sortingBy, [FromQuery] bool? isAscending)
         {
             // Get all walks via interface
-            var walks = await walkRepo.GetAllWalksAsync(filterOn, filterQuery, sortingBy, isAscending);
+            var walks = await walkRepo.GetAllWalksAsync(filterOn, filterQuery, sortingBy, isAscending ?? true); // If isAscending is null, default to true
 
             // Convert walks to list of dto's
             var walkDtos = mapper.Map<List<WalkDto>>(walks);
