@@ -14,16 +14,21 @@ namespace NZWalks.API.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<List<Walk>> GetAllWalksAsync(string? filterOn = null, string? filterQuery = null, string? sortingBy = null, bool isAscending = true)
+        public async Task<List<Walk>> GetAllWalksAsync(string? filterOn = null, string? filterQuery = null, string? sortingBy = null, bool isAscending = true,
+            int pageNumber = 1, int pageSize = 5)
         {
             /*
-             * When the dbContext goes to the database to retrieve all the walks, it will also retrieve the associated difficutly and region
+             * When the dbContext goes to the database to retrieve all the walks, it will also retrieve the associated difficulty and region
              * for a walk. This is done by setting navigation properties in the Walk Domain Model, which are then included in the query below.
              * It finds the associated difficulty and region for each walk by looking at the DifficultyId and RegionId properties in the Walk Domain Model. 
              */
             //var walks = await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
             var walks = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
-            
+
+            // To make it more type safe, we can do the following:
+            // var walks = await dbContext.Walks.Include(x => x.Difficulty).Include(x => x.Region).ToListAsync();
+
+
             // Filtering
             if (string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
             {
@@ -48,9 +53,7 @@ namespace NZWalks.API.Repositories
             }
 
             // Paging
-
-            // To make it more type safe, we can do the following:
-            // var walks = await dbContext.Walks.Include(x => x.Difficulty).Include(x => x.Region).ToListAsync();
+            walks = walks.Skip((pageNumber - 1) * pageSize).Take(pageSize);
 
             // We will opt for the first method as we will have generic repositories later on
             return await walks.ToListAsync();
