@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor(); // HttpContextAccessor service injection into Dependency Injection container.
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer(); // ApiExplorer service injection into Dependency Injection container.
 builder.Services.AddSwaggerGen(); // SwaggerGen service injection into Dependency Injection container.
@@ -22,6 +24,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectio
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>(); // We inject the IRegionRepository into the container, with the implmentation of SQLRegionRepository.
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>(); // We inject the IWalkRepository into the container, with the implmentation of SQLWalkRepository.
+builder.Services.AddScoped<IImageRepository, SQLImageRepository>(); // We inject the IImageRepository into the container, with the implmentation of SQLImageRepository.
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 // We add the authentication service.
