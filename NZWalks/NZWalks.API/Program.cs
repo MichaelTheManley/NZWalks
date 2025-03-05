@@ -5,6 +5,7 @@ using NZWalks.API.Mappings;
 using NZWalks.API.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,13 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication(); // This must be before UseAuthorization
 app.UseAuthorization(); // Before this can happen, we need to authenticate!
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+    RequestPath = "/Images"
+    // Essentially, everytime we go to https://localhost:7055/Images, it will redirect use to the FileProvider path, which is the correct path to the images folder.
+});
 
 app.MapControllers();
 
