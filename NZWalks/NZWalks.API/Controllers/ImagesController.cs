@@ -28,6 +28,11 @@ namespace NZWalks.API.Controllers
         [Route("Upload")]
         public async Task<IActionResult> UploadImage([FromForm] ImageUploadRequestDto imageDetails)
         {
+            if (imageDetails == null || imageDetails.File == null)
+            {
+                return BadRequest("No image file uploaded.");
+            }
+
             // We first need to validate if the request is correct or not
             ValidateFileUpload(imageDetails);
 
