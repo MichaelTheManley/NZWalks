@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.CustomActionFilters;
@@ -11,24 +12,30 @@ namespace NZWalks.API.Controllers
     // https://localhost:5001/api/regions 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository regionRepo;
         private readonly IMapper mapper;
+        private readonly ILogger<RegionsController> logger;
 
-        public RegionsController(IRegionRepository regionRepo, IMapper mapper)
+        public RegionsController(IRegionRepository regionRepo, IMapper mapper, ILogger<RegionsController> logger)
         {
             this.regionRepo = regionRepo;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         // GET ALL REGIONS
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            logger.LogInformation("GetAllRegions Action Method was invoked.");
+            
             // Get data from database - domain models
             var regions = await regionRepo.GetAllAsync();
+
+            logger.LogInformation($"Finished GetAllRegions request -> data retrieved: {JsonSerializer.Serialize(regions)}");
 
             // Using AutoMapper to map Domain Models to Dto's
             var regionsDto = mapper.Map<List<RegionDto>>(regions); // We are mapping the region domain models (regions) to the list of regions in dto format

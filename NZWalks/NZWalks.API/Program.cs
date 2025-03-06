@@ -6,8 +6,19 @@ using NZWalks.API.Repositories;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.FileProviders;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add Serilog to the builder
+
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .MinimumLevel.Information()
+    .CreateLogger();
+
+builder.Logging.ClearProviders(); // Clear the default logging providers
+builder.Logging.AddSerilog(logger); // Add the Serilog logger
 
 // Add services to the container.
 
